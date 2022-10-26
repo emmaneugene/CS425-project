@@ -1,0 +1,6 @@
+emotional_classifier/venv/
+emotional_classifier/bert_files/__pycache__/
+emotional_classifier/bert_files/output/
+.DS_Store
+emotional_classifier/.DS_Store
+emotional_classifier/bert_files/.DS_Store
