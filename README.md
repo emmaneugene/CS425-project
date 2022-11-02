@@ -19,3 +19,4 @@ To run:
 3. You're all set! You can now chat with the bot by running:
 - python emotional_classifier.py
 4. Type in any random sentence. To exit, press '0'
+- deactivate                                (exit)
