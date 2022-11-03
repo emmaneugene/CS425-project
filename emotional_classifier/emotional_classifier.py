@@ -214,10 +214,11 @@ print("Hello! This is an emotional classifier. \nPlease type '0' to exit. \n\n")
 sentence = input("Please type a statement here: ")
 
 while sentence != '0':
-    print("Please wait... \n")
+    # print("Please wait... \n")
     emotion = getPrediction([sentence, ''])[0][2]
     print(generate_response(emotion))
-    print(f"(Emotion identified: {emotion}) \n\n")
+    # print(f"(Emotion identified: {emotion}) \n\n")
+    print(f"(Emotion identified: {emotion})")
     sentence = input("Please type a statement here: ")
 
 print("Thank you for chatting with me! \n")
