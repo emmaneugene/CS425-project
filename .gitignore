@@ -1,7 +1,10 @@
 emotional_classifier/venv/
-dialogue_generation/venv/
 emotional_classifier/bert_files/__pycache__/
-.DS_Store
+emotional_classifier/__pycache__/
 emotional_classifier/.DS_Store
 emotional_classifier/bert_files/.DS_Store
+
+dialogue_generation/venv/
+
+.DS_Store
 venv/

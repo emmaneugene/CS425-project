@@ -21,9 +21,9 @@ from __future__ import print_function
 import collections
 import csv
 import os
-import bert_files.modeling as modeling
-import bert_files.optimization as optimization
-import bert_files.tokenization as tokenization
+import emotional_classifier.bert_files.modeling as modeling
+import emotional_classifier.bert_files.optimization as optimization
+import emotional_classifier.bert_files.tokenization as tokenization
 import tensorflow as tf
 
 flags = tf.flags
