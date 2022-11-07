@@ -1,6 +1,3 @@
-print("\nGive me a while ah I'm loading... \n\n")
-
-
 from sklearn.model_selection import train_test_split
 import numpy as np
 np.random.seed(11)
@@ -12,9 +9,9 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR) #suppress info, w
 import tensorflow_hub as hub
 from datetime import datetime
 
-import bert_files.run_classifier as run_classifier
-import bert_files.optimization as optimization
-import bert_files.tokenization as tokenization
+import emotional_classifier.bert_files.run_classifier as run_classifier
+import emotional_classifier.bert_files.optimization as optimization
+import emotional_classifier.bert_files.tokenization as tokenization
 
 
 
@@ -171,6 +168,7 @@ def model_fn_builder(num_labels, learning_rate, num_train_steps,
 
 
 def generate_response(emotion):
+    ''' Returns the rules based response given the emotion '''
     emotion_map = {
         "Joy": "I'm so happy for you!",
         "Sadness": "I am sorry to hear that.",
@@ -183,23 +181,34 @@ def generate_response(emotion):
 
 
 
-''' BUILDING MODEL '''
+def build_model():
+  ''' 
+    Imports the fine-tuned model that we have already previously trained. 
+    Returns the loaded model and the tokenizer for the input.
+  '''
+  tokenizer = create_tokenizer_from_hub_module()
 
-tokenizer = create_tokenizer_from_hub_module()
+  model_fn = model_fn_builder(
+    num_labels=len(label_list),
+    learning_rate=LEARNING_RATE,
+    num_train_steps=num_train_steps,
+    num_warmup_steps=num_warmup_steps)
 
-model_fn = model_fn_builder(
-  num_labels=len(label_list),
-  learning_rate=LEARNING_RATE,
-  num_train_steps=num_train_steps,
-  num_warmup_steps=num_warmup_steps)
+  loaded = tf.estimator.Estimator(
+      model_fn=model_fn, 
+      model_dir=OUTPUT_DIR,
+      params={"batch_size": BATCH_SIZE}
+  )
 
-loaded = tf.estimator.Estimator(
-    model_fn=model_fn, 
-    model_dir=OUTPUT_DIR,
-    params={"batch_size": BATCH_SIZE}
-)
+  return loaded, tokenizer
 
-def getPrediction(in_sentences):
+
+def getPrediction(in_sentences, loaded, tokenizer):
+  ''' 
+    Takes in a list of sentences
+    Uses the loaded model and tokenizer to predict the integer representing the emotion for each of the sentences.
+    Returns a list of integers
+  '''
   labels = ["Joy", "Sadness", "Anger", "Fear", "Neutral"]
   input_examples = [run_classifier.InputExample(guid="", text_a = x, text_b = None, label = 0) for x in in_sentences] 
   input_features = run_classifier.convert_examples_to_features(input_examples, label_list, MAX_SEQ_LENGTH, tokenizer)
@@ -208,15 +217,9 @@ def getPrediction(in_sentences):
   return [(sentence, prediction['probabilities'], labels[prediction['labels']]) for sentence, prediction in zip(in_sentences, predictions)]
 
 
-print("Hello! This is an emotional classifier. \nPlease type '0' to exit. \n\n")
-sentence = input("Please type a statement here: ")
+def getResponse(sentence, loaded, tokenizer):
+  ''' Returns the rules based response for each sentence using the loaded model and the tokenizer '''
+  emotion = getPrediction([sentence, ''], loaded, tokenizer)[0][2]
+  response = generate_response(emotion)
 
-while sentence != '0':
-    # print("Please wait... \n")
-    emotion = getPrediction([sentence, ''])[0][2]
-    print(generate_response(emotion))
-    # print(f"(Emotion identified: {emotion}) \n\n")
-    print(f"(Emotion identified: {emotion})\n")
-    sentence = input("Please type a statement here: ")
-
-print("Thank you for chatting with me! \n")
+  return response
