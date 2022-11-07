@@ -167,13 +167,13 @@ def model_fn_builder(num_labels, learning_rate, num_train_steps,
   return model_fn
 
 
-def generate_response(emotion):
+def map_emotion_to_response(emotion):
     ''' Returns the rules based response given the emotion '''
     emotion_map = {
-        "Joy": "I'm so happy for you!",
-        "Sadness": "I am sorry to hear that.",
-        "Anger": "Calm down, everything will be alright.",
-        "Fear": "That's quite scary!",
+        "Joy": "I'm so happy for you! ",
+        "Sadness": "I am sorry to hear that. ",
+        "Anger": "Calm down, everything will be alright. ",
+        "Fear": "That's quite scary! ",
         "Neutral": ""
     }
 
@@ -181,7 +181,7 @@ def generate_response(emotion):
 
 
 
-def build_model():
+def load_model():
   ''' 
     Imports the fine-tuned model that we have already previously trained. 
     Returns the loaded model and the tokenizer for the input.
@@ -217,9 +217,9 @@ def getPrediction(in_sentences, loaded, tokenizer):
   return [(sentence, prediction['probabilities'], labels[prediction['labels']]) for sentence, prediction in zip(in_sentences, predictions)]
 
 
-def getResponse(sentence, loaded, tokenizer):
+def generate_reply(sentence, loaded, tokenizer):
   ''' Returns the rules based response for each sentence using the loaded model and the tokenizer '''
   emotion = getPrediction([sentence, ''], loaded, tokenizer)[0][2]
-  response = generate_response(emotion)
+  response = map_emotion_to_response(emotion)
 
   return response
