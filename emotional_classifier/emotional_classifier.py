@@ -3,6 +3,7 @@ print("\nGive me a while ah I'm loading... \n\n")
 
 from sklearn.model_selection import train_test_split
 import numpy as np
+np.random.seed(11)
 import pandas as pd
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' #suppress info, warning
@@ -23,14 +24,14 @@ MAX_SEQ_LENGTH = 128
 BERT_MODEL_HUB = "https://tfhub.dev/google/bert_uncased_L-12_H-768_A-12/1"
 
 BATCH_SIZE = 32
-LEARNING_RATE = 2e-5
+LEARNING_RATE = 1e-5
 NUM_TRAIN_EPOCHS = 3.0
 WARMUP_PROPORTION = 0.1
-len_train_features = 16007
+len_train_features = 39585
 num_train_steps = int(len_train_features / BATCH_SIZE * NUM_TRAIN_EPOCHS)
 num_warmup_steps = int(num_train_steps * WARMUP_PROPORTION)
 
-label_list = [0, 1, 2, 3, 4, 5, 6, 7]
+label_list = [0, 1, 2, 3, 4]
 
 
 
@@ -172,13 +173,10 @@ def model_fn_builder(num_labels, learning_rate, num_train_steps,
 def generate_response(emotion):
     emotion_map = {
         "Joy": "I'm so happy for you!",
-        "Trust": "I trust you.",
-        "Fear": "That's quite scary!",
-        "Surprise": "Wow! That's amazing!",
         "Sadness": "I am sorry to hear that.",
-        "Disgust": "That is not very nice.",
         "Anger": "Calm down, everything will be alright.",
-        "Anticipation": "Can't wait!"
+        "Fear": "That's quite scary!",
+        "Neutral": ""
     }
 
     return emotion_map.get(emotion, "I'm not sure how you are feeling.")
@@ -202,7 +200,7 @@ loaded = tf.estimator.Estimator(
 )
 
 def getPrediction(in_sentences):
-  labels = ["Joy", "Trust", "Fear", "Surprise", "Sadness", "Disgust", "Anger", "Anticipation"]
+  labels = ["Joy", "Sadness", "Anger", "Fear", "Neutral"]
   input_examples = [run_classifier.InputExample(guid="", text_a = x, text_b = None, label = 0) for x in in_sentences] 
   input_features = run_classifier.convert_examples_to_features(input_examples, label_list, MAX_SEQ_LENGTH, tokenizer)
   predict_input_fn = run_classifier.input_fn_builder(features=input_features, seq_length=MAX_SEQ_LENGTH, is_training=False, drop_remainder=False)
@@ -218,7 +216,7 @@ while sentence != '0':
     emotion = getPrediction([sentence, ''])[0][2]
     print(generate_response(emotion))
     # print(f"(Emotion identified: {emotion}) \n\n")
-    print(f"(Emotion identified: {emotion})")
+    print(f"(Emotion identified: {emotion})\n")
     sentence = input("Please type a statement here: ")
 
 print("Thank you for chatting with me! \n")
