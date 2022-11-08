@@ -1,6 +1,7 @@
-# CS425-project
+# Course: CS425-Natural Language Communication
+# Project Title: FRANKLY
 
-## FRANKLY Overview 
+# Overview 
 
 # Emotional classifier (BERT)
 - This is an emotional classifier fined tuned from a pre-trained BERT model. There are 5 possible emotions: Joy, Sadness, Anger, Fear and Neutral. Each emotion is mapped to a fixed output that you can alter under the generate_response function in emotional_classifier.py. 
