@@ -5,6 +5,7 @@ emotional_classifier/.DS_Store
 emotional_classifier/bert_files/.DS_Store
 
 dialogue_generation/venv/
+dialogue_generation/__pycache__/
 
 .DS_Store
 venv/

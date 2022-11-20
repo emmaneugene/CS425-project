@@ -8,20 +8,20 @@ Original file is located at
 """
 
 # imports
-from transformers import BartTokenizer, BartForConditionalGeneration, AdamW, BartConfig
-from torch.utils.data import DataLoader, TensorDataset, random_split, RandomSampler, Dataset
-import pandas as pd
-import numpy as np
+from transformers import BartTokenizer, BartForConditionalGeneration #, AdamW, BartConfig
+# from torch.utils.data import DataLoader, TensorDataset, random_split, RandomSampler, Dataset
+# import pandas as pd
+# import numpy as np
 import os
 
-import torch.nn.functional as F
+# import torch.nn.functional as F
 import pytorch_lightning as pl
 import torch
-from pytorch_lightning.callbacks import ModelCheckpoint
+# from pytorch_lightning.callbacks import ModelCheckpoint
 
-import math
-import random
-import re
+# import math
+# import random
+# import re
 import argparse
 
 class LitModel(pl.LightningModule):
@@ -127,10 +127,12 @@ def load_model():
         Imports the fine-tuned model that we have already previously trained. 
         Returns the loaded model and the tokenizer for the input.
     '''
+    bart_model = BartForConditionalGeneration.from_pretrained("facebook/bart-base")
     tokenizer = BartTokenizer.from_pretrained('facebook/bart-base', add_prefix_space=True)
+    hparams = argparse.Namespace()
 
     # # EDIT THIS CODE 
-    model = LitModel.load_from_checkpoint("SOME_DIRECTORY_AND_SOME_FILE/checkpoint_files_2/8_ep_140k_simple_0210.ckpt")
+    model = LitModel.load_from_checkpoint(os.path.join(os.getcwd(), "dialogue_generation/bart_files/epoch=2-step=11418.ckpt"), tokenizer=tokenizer, model=bart_model, hparams=hparams)
 
     # Put the model on eval mode
     model.to(torch.device('cpu'))
