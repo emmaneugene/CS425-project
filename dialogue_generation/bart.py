@@ -8,20 +8,10 @@ Original file is located at
 """
 
 # imports
-from transformers import BartTokenizer, BartForConditionalGeneration #, AdamW, BartConfig
-# from torch.utils.data import DataLoader, TensorDataset, random_split, RandomSampler, Dataset
-# import pandas as pd
-# import numpy as np
+from transformers import BartTokenizer, BartForConditionalGeneration
 import os
-
-# import torch.nn.functional as F
 import pytorch_lightning as pl
 import torch
-# from pytorch_lightning.callbacks import ModelCheckpoint
-
-# import math
-# import random
-# import re
 import argparse
 
 class LitModel(pl.LightningModule):
@@ -31,15 +21,7 @@ class LitModel(pl.LightningModule):
     self.tokenizer = tokenizer
     self.model = model
     self.learning_rate = learning_rate
-    # self.freeze_encoder = freeze_encoder
-    # self.freeze_embeds_ = freeze_embeds
     self.hp = hparams
-
-    # if self.hparams.freeze_encoder:
-    #   freeze_params(self.model.get_encoder())
-
-    # if self.hparams.freeze_embeds:
-    #   self.freeze_embeds()
   
   def freeze_embeds(self):
     ''' freeze the positional embedding parameters of the model; adapted from finetune.py '''
@@ -131,7 +113,6 @@ def load_model():
     tokenizer = BartTokenizer.from_pretrained('facebook/bart-base', add_prefix_space=True)
     hparams = argparse.Namespace()
 
-    # # EDIT THIS CODE 
     model = LitModel.load_from_checkpoint(os.path.join(os.getcwd(), "dialogue_generation/bart_files/epoch=2-step=11418.ckpt"), tokenizer=tokenizer, model=bart_model, hparams=hparams)
 
     # Put the model on eval mode
