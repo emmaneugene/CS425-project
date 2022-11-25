@@ -20,4 +20,4 @@ while sentence != 'Bye!':
     print("FRANKLY: " + emotional_response + conversational_response+ "\n")
     sentence = input("What's on your mind?: ")
 
-print("FRANKLY: Hope you are feeling better. Have a great day ahead! \n")
+print("FRANKLY: Have a great day ahead! \n")
