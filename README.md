@@ -21,7 +21,7 @@ FRANKLY is a chatbot that helps to provide emotional support and helpful advice 
 1. Download python 3.7.1 if you don't already have it 
 2. Run the following lines of code to create virtual enviroment and download dependencies:
 ```python
-pip install virtualenv                  # if you don't already have it
+pip install virtualenv                    # if you don't already have it
 virtualenv venv --python=python3.7.1      # create a venv with python 3.7.1
 source venv/bin/activate                  # activate the virtual environment
 which pip                                 # confirm pip is from virtual environment
@@ -34,6 +34,7 @@ pip install -r requirements.txt           # install required packages
 ```python
 python run_models.py
 ```
+*This file (run_models.py) imports functions from emotional_classifier/emotional_classifier.py to run the BERT emotional classifier, and dialogue_generation/bart.py to run the BART dialogue generator.*
 
 5. To exit the venv
 ```python
