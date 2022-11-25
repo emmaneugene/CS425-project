@@ -1,3 +1,5 @@
+# Emotional classifier datasets
+
 Dataset for emotional classification, retrieved from HuggingFace and Kaggle.
 
 Labels are mapped to emotional states according to the following legend:
